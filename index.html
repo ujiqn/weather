@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>空を読む</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Noto Serif JP","游明朝",serif;min-height:100dvh;color:#fff;overflow-x:hidden;transition:background 1s ease;background:linear-gradient(170deg,#4a6a80 0%,#3a5068 50%,#2a4058 100%)}
+body.weather-clear{background:linear-gradient(170deg,#4a90c2 0%,#2a6fa0 40%,#1a5080 100%)}
+body.weather-sunny{background:linear-gradient(170deg,#5a9acc 0%,#3a7aaa 40%,#2a6090 100%)}
+body.weather-cloudy{background:linear-gradient(170deg,#7a8a98 0%,#5a6a78 50%,#4a5a68 100%)}
+body.weather-fog{background:linear-gradient(170deg,#8a9098 0%,#6a7880 50%,#5a6870 100%)}
+body.weather-drizzle{background:linear-gradient(170deg,#5a7a90 0%,#3a5a70 50%,#2a4a60 100%)}
+body.weather-rain{background:linear-gradient(170deg,#4a6a80 0%,#3a5068 50%,#2a4058 100%)}
+body.weather-snow{background:linear-gradient(170deg,#8a9aaa 0%,#6a7a8a 50%,#5a6a7a 100%)}
+body.weather-thunder{background:linear-gradient(170deg,#3a4a5a 0%,#2a3040 50%,#1a2030 100%)}
+.main{min-height:100dvh;display:flex;flex-direction:column;padding:3rem 1.5rem 1.5rem;animation:fadeIn 1s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.location{text-align:center;font-size:.85rem;font-weight:300;letter-spacing:.3em;color:rgba(255,255,255,.85)}
+.weather-section{text-align:center;margin-top:1.5rem}
+.weather-icon{font-size:3rem;line-height:1.2}
+.temperature{font-size:1.4rem;font-weight:300;margin-top:.3rem;color:rgba(255,255,255,.95)}
+.quote-section{flex:1;display:flex;align-items:center;justify-content:center;padding:1.5rem 0;overflow-x:auto}
+.quote-text{writing-mode:vertical-rl;text-orientation:mixed;font-size:clamp(.95rem,2.5vw,1.1rem);font-weight:400;line-height:2.2;letter-spacing:.08em;max-height:70vh}
+.quote-meta{text-align:center;font-size:.8rem;font-weight:300;color:rgba(255,255,255,.7);margin-bottom:1.5rem}
+.quote-author{margin-right:.3em}
+.quote-title::before{content:"『"}.quote-title::after{content:"』"}
+.footer{border-top:1px solid rgba(255,255,255,.15);padding-top:1rem}
+.footer-date{display:flex;justify-content:space-between;font-size:.8rem;font-weight:300;color:rgba(255,255,255,.7);margin-bottom:.8rem}
+.hourly{display:flex;overflow-x:auto;scrollbar-width:none}
+.hourly::-webkit-scrollbar{display:none}
+.hour-item{flex:0 0 auto;width:3.5rem;text-align:center;font-weight:300;color:rgba(255,255,255,.8)}
+.hour-item.now{color:#fff;font-weight:400}
+.hour-label{font-size:.7rem;margin-bottom:.3rem}
+.hour-icon{font-size:1.1rem;margin-bottom:.2rem}
+.hour-temp{font-size:.75rem}
+.hour-precip{font-size:.6rem;color:rgba(150,200,255,.8);margin-top:.1rem}
+@media(min-width:600px){.main{max-width:480px;margin:0 auto}}
+  </style>
+</head>
+<body>
+  <main class="main" id="main">
+    <div class="location" id="location-info"></div>
+    <section class="weather-section">
+      <div class="weather-icon" id="weather-icon"></div>
+      <div class="temperature" id="temperature"></div>
+    </section>
+    <section class="quote-section">
+      <blockquote class="quote-text" id="quote-text"></blockquote>
+    </section>
+    <div class="quote-meta">
+      <span class="quote-author" id="quote-author"></span>
+      <span class="quote-title" id="quote-title"></span>
+    </div>
+    <footer class="footer">
+      <div class="footer-date" id="footer-date"></div>
+      <div class="hourly" id="hourly"></div>
+    </footer>
+  </main>
+
+<script>
+// --- 引用データ ---
+const quotes = {
+  clear: [
+    { text: "さわやかな九月一日の朝でした。青ぞらで風がどうと鳴り、日光は運動場いっぱいでした。", author: "宮沢賢治", title: "風の又三郎" },
+    { text: "霧がふっと切れました。日の光がさっと流れてはいりました。草からはしずくがきらきら落ち、すべての葉も茎も花も、ことしの終わりの日の光を吸っています。", author: "宮沢賢治", title: "風の又三郎" },
+    { text: "ある日の事でございます。御釈迦様は極楽の蓮池のふちを、独りでぶらぶら御歩きになっていらっしゃいました。池の中に咲いている蓮の花は、みんな玉のようにまっ白で、そのまん中にある金色の蕊からは、何とも云えない好い匂が、絶間なくあたりへ溢れて居ります。極楽は丁度朝なのでございましょう。", author: "芥川龍之介", title: "蜘蛛の糸" },
+  ],
+  sunny: [
+    { text: "さわやかな九月一日の朝でした。青ぞらで風がどうと鳴り、日光は運動場いっぱいでした。", author: "宮沢賢治", title: "風の又三郎" },
+    { text: "霧がふっと切れました。日の光がさっと流れてはいりました。草からはしずくがきらきら落ち、すべての葉も茎も花も、ことしの終わりの日の光を吸っています。", author: "宮沢賢治", title: "風の又三郎" },
+    { text: "ことに門の上の空が、夕焼けであかくなる時には、それが胡麻をまいたようにはっきり見えた。", author: "芥川龍之介", title: "羅生門" },
+  ],
+  cloudy: [
+    { text: "雨は、羅生門をつつんで、遠くから、ざあっと云う音をあつめて来る。夕闇は次第に空を低くして、見上げると、門の屋根が、斜につき出した甍の先に、重たくうす暗い雲を支えている。", author: "芥川龍之介", title: "羅生門" },
+    { text: "それに俄かに雲が重くなったのです。その雲のどこからか、雷の一切れらしいものが、がたっと引きちぎったような音をたてました。", author: "宮沢賢治", title: "ガドルフの百合" },
+    { text: "そのときはもうそらがいっぱいの黒い雲で、楊も変に白っぽくなり、山の草はしんしんとくらくなり、そこらはなんとも言われない恐ろしい景色にかわっていました。", author: "宮沢賢治", title: "風の又三郎" },
+  ],
+  fog: [
+    { text: "空はたいへん暗く重くなり、まわりがぼうっとかすんで来ました。冷たい風が、草を渡りはじめ、もう雲や霧が切れ切れになって目の前をぐんぐん通り過ぎて行きました。", author: "宮沢賢治", title: "風の又三郎" },
+    { text: "草がからだを曲げて、パチパチ言ったり、さらさら鳴ったりしました。霧がことに滋くなって、着物はすっかりしめってしまいました。", author: "宮沢賢治", title: "風の又三郎" },
+    { text: "黒板から降る白墨の粉のような、暗い冷たい霧の粒が、そこら一面踊りまわり、あたりがにわかにシインとして、陰気に陰気になりました。草からは、もうしずくの音がポタリポタリと聞こえて来ます。", author: "宮沢賢治", title: "風の又三郎" },
+  ],
+  drizzle: [
+    { text: "或日の暮方の事である。一人の下人が、羅生門の下で雨やみを待っていた。広い門の下には、この男のほかに誰もいない。", author: "芥川龍之介", title: "羅生門" },
+    { text: "申の刻下りからふり出した雨は、いまだに上るけしきがない。そこで、下人は、何をおいても差当り明日の暮しをどうにかしようとして、とりとめもない考えをたどりながら、さっきから朱雀大路にふる雨の音を、聞くともなく聞いていたのである。", author: "芥川龍之介", title: "羅生門" },
+    { text: "雨ニモマケズ\n風ニモマケズ\n雪ニモ夏ノ暑サニモマケヌ\n丈夫ナカラダヲモチ", author: "宮沢賢治", title: "〔雨ニモマケズ〕" },
+  ],
+  rain: [
+    { text: "雨は、羅生門をつつんで、遠くから、ざあっと云う音をあつめて来る。夕闇は次第に空を低くして、見上げると、門の屋根が、斜につき出した甍の先に、重たくうす暗い雲を支えている。", author: "芥川龍之介", title: "羅生門" },
+    { text: "そして間もなく、雨と黄昏とがいっしょに襲いかかったのです。実にはげしい雷雨になりました。いなびかりは、まるでこんな憐れな旅のものなどを漂白してしまいそう、並木の青い葉がむしゃくしゃにむしられて、雨のつぶと一緒に堅いみちを叩き、枝までがガリガリ引き裂かれて降りかかりました。", author: "宮沢賢治", title: "ガドルフの百合" },
+    { text: "雨ニモマケズ\n風ニモマケズ\n雪ニモ夏ノ暑サニモマケヌ\n丈夫ナカラダヲモチ", author: "宮沢賢治", title: "〔雨ニモマケズ〕" },
+  ],
+  snow: [
+    { text: "津軽の雪\nこな雪 つぶ雪 わた雪 みづ雪\nかた雪 ざらめ雪 こほり雪", author: "太宰治", title: "津軽" },
+    { text: "冬、雪の降る夜も、傘をさして弟と二人でこの桟橋に行つた。深い港の海に、雪がひそひそ降つてゐるのはいいものだ。", author: "太宰治", title: "津軽" },
+    { text: "雨ニモマケズ\n風ニモマケズ\n雪ニモ夏ノ暑サニモマケヌ\n丈夫ナカラダヲモチ\n慾ハナク\n決シテ瞋ラズ\nイツモシヅカニワラッテヰル", author: "宮沢賢治", title: "〔雨ニモマケズ〕" },
+  ],
+  thunder: [
+    { text: "けれども間もなく全くの夜になりました。空のあっちでもこっちでも、雷が素敵に大きな咆哮をやり、電光のせわしいことはまるで夜の大空の意識の明滅のようでした。", author: "宮沢賢治", title: "ガドルフの百合" },
+    { text: "けれども窓の外では、いっぱいに咲いた白百合が、十本ばかり息もつけない嵐の中に、その稲妻の八分一秒を、まるでかがやいてじっと立っていたのです。", author: "宮沢賢治", title: "ガドルフの百合" },
+    { text: "美しい百合の憤りは頂点に達し、灼熱の花弁は雪よりも厳めしく、ガドルフはその凛と張る音さえ聴いたと思いました。暗が来たと思う間もなく、また稲妻が向うのぎざぎざの雲から、北斎の山下白雨のように赤く這って来て、触れない光の手をもって、百合を擦めて過ぎました。", author: "宮沢賢治", title: "ガドルフの百合" },
+  ],
+};
+
+const weatherMeta = {
+  clear:   { icon: "☀️", name: "快晴" },
+  sunny:   { icon: "🌤️", name: "晴れ" },
+  cloudy:  { icon: "☁️", name: "曇り" },
+  fog:     { icon: "🌫️", name: "霧" },
+  drizzle: { icon: "🌦️", name: "霧雨" },
+  rain:    { icon: "🌧️", name: "雨" },
+  snow:    { icon: "❄️", name: "雪" },
+  thunder: { icon: "⚡", name: "雷雨" },
+};
+
+const DAYS = ["日", "月", "火", "水", "木", "金", "土"];
+const categories = Object.keys(weatherMeta);
+
+function getWeatherCategory(code) {
+  if (code === 0) return "clear";
+  if (code <= 2) return "sunny";
+  if (code === 3) return "cloudy";
+  if (code >= 45 && code <= 48) return "fog";
+  if (code >= 51 && code <= 57) return "drizzle";
+  if (code >= 61 && code <= 67) return "rain";
+  if (code >= 71 && code <= 77) return "snow";
+  if (code >= 80 && code <= 82) return "rain";
+  if (code >= 85 && code <= 86) return "snow";
+  if (code >= 95) return "thunder";
+  return "cloudy";
+}
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function formatDate(d) {
+  return `${String(d.getMonth()+1).padStart(2,"0")}/${String(d.getDate()).padStart(2,"0")}（${DAYS[d.getDay()]}）`;
+}
+
+// --- 画面描画 ---
+function render(category, tempC, quote, hourlyItems, locationName, high, low) {
+  document.getElementById("location-info").textContent = locationName;
+  document.getElementById("weather-icon").textContent = weatherMeta[category].icon;
+  document.getElementById("temperature").textContent = tempC + "°C";
+  document.getElementById("quote-text").innerHTML = quote.text.replace(/\n/g, "<br>");
+  document.getElementById("quote-author").textContent = quote.author;
+  document.getElementById("quote-title").textContent = quote.title;
+
+  const now = new Date();
+  document.getElementById("footer-date").innerHTML =
+    `<span>${formatDate(now)}</span><span>${high}　${low}</span>`;
+
+  const container = document.getElementById("hourly");
+  container.innerHTML = "";
+  hourlyItems.forEach((item, i) => {
+    const el = document.createElement("div");
+    el.className = "hour-item" + (i === 0 ? " now" : "");
+    const precipHtml = item.precip != null ? `<div class="hour-precip">${item.precip}%</div>` : "";
+    el.innerHTML =
+      `<div class="hour-label">${item.label}</div>` +
+      `<div class="hour-icon">${item.icon}</div>` +
+      `<div class="hour-temp">${item.temp}°C</div>` +
+      precipHtml;
+    container.appendChild(el);
+  });
+
+  document.body.className = "weather-" + category;
+}
+
+// --- 即座にデモ表示（API待ちなし） ---
+const now = new Date();
+const demoCat = pick(categories);
+const demoTemp = Math.floor(Math.random() * 30) - 5;
+const demoQuote = pick(quotes[demoCat]);
+const demoHourly = [];
+for (let i = 0; i < 24; i++) {
+  const h = (now.getHours() + i) % 24;
+  const c = pick(categories);
+  demoHourly.push({
+    label: i === 0 ? "現在" : h + "時",
+    icon: weatherMeta[c].icon,
+    temp: demoTemp + Math.floor(Math.random() * 6) - 3,
+    precip: Math.floor(Math.random() * 80),
+  });
+}
+render(demoCat, demoTemp, demoQuote, demoHourly, "東京都", demoTemp + 5, demoTemp - 3);
+
+// --- APIで実データに差し替え ---
+(async function () {
+  try {
+    // 位置情報を試みる（3秒タイムアウト）
+    let lat = 35.6762, lon = 139.6503;
+    try {
+      const pos = await new Promise((ok, ng) => {
+        if (!navigator.geolocation) { ng(); return; }
+        const t = setTimeout(ng, 3000);
+        navigator.geolocation.getCurrentPosition(
+          p => { clearTimeout(t); ok(p); },
+          () => { clearTimeout(t); ng(); },
+          { timeout: 3000, maximumAge: 300000 }
+        );
+      });
+      lat = pos.coords.latitude;
+      lon = pos.coords.longitude;
+    } catch { /* 東京のまま */ }
+
+    // 天気API
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const url =
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+      `&current_weather=true&timezone=auto&hourly=temperature_2m,weather_code,precipitation_probability&forecast_days=2`;
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (!res.ok) return;
+    const data = await res.json();
+
+    const weather = data.current_weather;
+    const category = getWeatherCategory(weather.weathercode);
+    const quote = pick(quotes[category] || quotes.cloudy);
+    const curHour = now.getHours();
+    const temps = data.hourly.temperature_2m;
+    const high = Math.round(Math.max(...temps));
+    const low = Math.round(Math.min(...temps));
+
+    const hourlyItems = [];
+    const precipData = data.hourly.precipitation_probability || [];
+    for (let i = 0; i < 24; i++) {
+      const idx = curHour + i;
+      if (idx >= data.hourly.time.length) break;
+      const c = getWeatherCategory(data.hourly.weather_code[idx]);
+      hourlyItems.push({
+        label: i === 0 ? "現在" : (idx % 24) + "時",
+        icon: weatherMeta[c].icon,
+        temp: Math.round(data.hourly.temperature_2m[idx]),
+        precip: precipData[idx] != null ? precipData[idx] : null,
+      });
+    }
+
+    render(category, Math.round(weather.temperature), quote, hourlyItems, "東京都", high, low);
+
+    // 地名を後から取得
+    try {
+      const ctrl2 = new AbortController();
+      const t2 = setTimeout(() => ctrl2.abort(), 3000);
+      const geoRes = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=ja&zoom=10`,
+        { signal: ctrl2.signal }
+      );
+      clearTimeout(t2);
+      if (geoRes.ok) {
+        const geo = await geoRes.json();
+        const a = geo.address;
+        if (a) {
+          const pref = a.province || a.state || "";
+          const city = a.city || a.town || a.village || a.county || "";
+          if (pref || city) {
+            document.getElementById("location-info").textContent =
+              pref && city ? pref + " " + city : pref || city;
+          }
+        }
+      }
+    } catch { /* 地名取得失敗は無視 */ }
+
+  } catch { /* API全体が失敗してもデモ表示のまま */ }
+})();
+</script>
+</body>
+</html>
