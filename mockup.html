@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>空を読む - モックアップ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@200;300;400&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{height:100%;overflow:hidden}
+body{
+  font-family:"Noto Serif JP",serif;
+  height:100%;color:#fff;overflow:hidden;
+  transition:background-color 1s ease;
+  margin:0;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+}
+
+/* --- 単色背景 --- */
+body.weather-clear{background-color:#3a7ab5}
+body.weather-sunny{background-color:#4a88aa}
+body.weather-cloudy{background-color:#6a7580}
+body.weather-fog{background-color:#787e84}
+body.weather-drizzle{background-color:#546a78}
+body.weather-rain{background-color:#455868}
+body.weather-snow{background-color:#708090}
+body.weather-thunder{background-color:#2e3a48}
+
+/* --- ポスターレイアウト --- */
+.poster{
+  height:100dvh;display:flex;flex-direction:column;
+  align-items:center;
+  padding:calc(env(safe-area-inset-top, 0px) + 2.5rem) 2rem calc(env(safe-area-inset-bottom, 0px) + 4.5rem);
+  position:relative;
+}
+
+/* 現在地（常時表示） */
+.location{
+  font-family:"Noto Sans JP",sans-serif;
+  text-align:center;
+  font-size:.75rem;font-weight:300;
+  letter-spacing:.2em;
+  color:rgba(255,255,255,.5);
+  margin-bottom:.8rem;
+}
+
+/* 天気アイコン + 気温 */
+.weather-block{
+  text-align:center;
+  cursor:pointer;
+  transition:transform .15s ease;
+  margin-bottom:2rem;
+}
+.weather-block:active{transform:scale(0.93)}
+.weather-icon-svg{
+  width:48px;height:48px;
+  opacity:.9;
+}
+.weather-temp{
+  font-family:"Noto Sans JP",sans-serif;
+  font-size:.85rem;font-weight:200;
+  color:rgba(255,255,255,.75);
+  margin-top:.3rem;
+  letter-spacing:.05em;
+}
+
+/* 引用（主役） */
+.quote-section{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  padding:.5rem 0;overflow:hidden;
+}
+.quote-text{
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font-size:clamp(1rem, 2.8vw, 1.15rem);
+  font-weight:400;line-height:2.4;letter-spacing:.1em;
+  max-height:50vh;
+  transition:opacity .4s ease;
+}
+
+/* 著者・作品名 */
+.quote-meta{
+  text-align:center;
+  font-size:.75rem;font-weight:300;
+  color:rgba(255,255,255,.55);
+  margin-top:1rem;
+  line-height:1.9;
+}
+.quote-title::before{content:"『"}.quote-title::after{content:"』"}
+
+/* Audible / Kindle アイコン */
+.book-links{
+  display:flex;gap:1.5rem;
+  justify-content:center;
+  margin-top:.7rem;
+}
+.book-link{
+  display:flex;align-items:center;justify-content:center;
+  width:32px;height:32px;
+  color:rgba(255,255,255,.35);
+  text-decoration:none;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:50%;
+  transition:all .2s ease;
+}
+.book-link:hover,.book-link:active{
+  color:rgba(255,255,255,.6);
+  border-color:rgba(255,255,255,.25);
+}
+.book-link svg{width:15px;height:15px}
+
+/* 降水テキスト */
+.precip-info{
+  font-family:"Noto Sans JP",sans-serif;
+  text-align:center;
+  font-size:.7rem;font-weight:300;
+  color:rgba(255,255,255,.5);
+  margin-top:1.2rem;
+  letter-spacing:.05em;
+  min-height:1em;
+  transition:opacity .4s ease;
+}
+.precip-icon{
+  display:inline-block;
+  width:12px;height:12px;
+  vertical-align:-1px;
+  margin-right:.3em;
+  opacity:.6;
+}
+
+/* シェアボタン */
+.share-btn{
+  position:absolute;
+  bottom:calc(env(safe-area-inset-bottom, 0px) + 1.2rem);
+  right:1.5rem;
+  background:none;border:none;
+  color:rgba(255,255,255,.25);
+  cursor:pointer;padding:.5rem;
+  transition:color .2s ease;
+}
+.share-btn:hover,.share-btn:active{color:rgba(255,255,255,.55)}
+.share-btn svg{width:18px;height:18px}
+
+@media(min-width:600px){
+  .poster{max-width:480px;margin:0 auto}
+}
+  </style>
+</head>
+<body>
+
+  <main class="poster">
+    <!-- 現在地 -->
+    <div class="location" id="location">東京都 渋谷区</div>
+
+    <!-- 天気アイコン + 気温 -->
+    <div class="weather-block" id="weather-block" title="タップで天気を切り替え">
+      <div id="weather-icon"></div>
+      <div class="weather-temp" id="weather-temp"></div>
+    </div>
+
+    <!-- 引用 -->
+    <section class="quote-section">
+      <blockquote class="quote-text" id="quote-text"></blockquote>
+    </section>
+
+    <!-- 著者・作品名 -->
+    <div class="quote-meta">
+      <span class="quote-author" id="quote-author"></span><br>
+      <span class="quote-title" id="quote-title"></span>
+    </div>
+
+    <!-- Audible / Kindle アイコン -->
+    <div class="book-links">
+      <a href="#" class="book-link" id="link-audible" title="Audibleで聴く">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 18v-6a9 9 0 0118 0v6"/>
+          <path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3v5zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3v5z"/>
+        </svg>
+      </a>
+      <a href="#" class="book-link" id="link-kindle" title="Kindleで読む">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- 降水テキスト -->
+    <div class="precip-info" id="precip-info"></div>
+
+    <!-- シェアボタン -->
+    <button class="share-btn" id="share-btn" title="共有">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+        <polyline points="16 6 12 2 8 6"/>
+        <line x1="12" y1="2" x2="12" y2="15"/>
+      </svg>
+    </button>
+  </main>
+
+
+<script>
+// --- SVGアイコン（白い線のミニマルデザイン） ---
+const weatherIcons = {
+  clear: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <circle cx="32" cy="32" r="12"/>
+    <line x1="32" y1="4" x2="32" y2="12"/>
+    <line x1="32" y1="52" x2="32" y2="60"/>
+    <line x1="4" y1="32" x2="12" y2="32"/>
+    <line x1="52" y1="32" x2="60" y2="32"/>
+    <line x1="12.2" y1="12.2" x2="17.9" y2="17.9"/>
+    <line x1="46.1" y1="46.1" x2="51.8" y2="51.8"/>
+    <line x1="51.8" y1="12.2" x2="46.1" y2="17.9"/>
+    <line x1="17.9" y1="46.1" x2="12.2" y2="51.8"/>
+  </svg>`,
+  sunny: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <circle cx="28" cy="30" r="10"/>
+    <line x1="28" y1="6" x2="28" y2="13"/>
+    <line x1="28" y1="47" x2="28" y2="54"/>
+    <line x1="6" y1="30" x2="13" y2="30"/>
+    <line x1="12.4" y1="14.4" x2="17.4" y2="19.4"/>
+    <line x1="43.6" y1="14.4" x2="38.6" y2="19.4"/>
+    <line x1="12.4" y1="45.6" x2="17.4" y2="40.6"/>
+    <path d="M40 36a10 10 0 015-2c5.5 0 10 4 10 9H28"/>
+  </svg>`,
+  cloudy: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <path d="M20 44h28a10 10 0 000-20 10 10 0 00-9.5 7 14 14 0 00-26.5 9A8 8 0 0020 44z"/>
+  </svg>`,
+  fog: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <line x1="12" y1="24" x2="52" y2="24"/>
+    <line x1="8" y1="32" x2="56" y2="32"/>
+    <line x1="14" y1="40" x2="50" y2="40"/>
+    <line x1="10" y1="48" x2="54" y2="48"/>
+  </svg>`,
+  drizzle: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <path d="M18 36h28a9 9 0 000-18 9 9 0 00-8.5 6 12 12 0 00-23.5 8A7 7 0 0018 36z"/>
+    <line x1="22" y1="42" x2="20" y2="48"/>
+    <line x1="34" y1="42" x2="32" y2="48"/>
+    <line x1="46" y1="42" x2="44" y2="48"/>
+  </svg>`,
+  rain: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <path d="M18 34h28a9 9 0 000-18 9 9 0 00-8.5 6 12 12 0 00-23.5 8A7 7 0 0018 34z"/>
+    <line x1="20" y1="40" x2="16" y2="50"/>
+    <line x1="28" y1="40" x2="24" y2="50"/>
+    <line x1="36" y1="40" x2="32" y2="50"/>
+    <line x1="44" y1="40" x2="40" y2="50"/>
+  </svg>`,
+  snow: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <path d="M18 34h28a9 9 0 000-18 9 9 0 00-8.5 6 12 12 0 00-23.5 8A7 7 0 0018 34z"/>
+    <circle cx="22" cy="44" r="1.5" fill="white" stroke="none"/>
+    <circle cx="32" cy="48" r="1.5" fill="white" stroke="none"/>
+    <circle cx="42" cy="44" r="1.5" fill="white" stroke="none"/>
+    <circle cx="27" cy="52" r="1.5" fill="white" stroke="none"/>
+    <circle cx="37" cy="52" r="1.5" fill="white" stroke="none"/>
+  </svg>`,
+  thunder: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 32h28a9 9 0 000-18 9 9 0 00-8.5 6 12 12 0 00-23.5 8A7 7 0 0018 32z"/>
+    <polyline points="30,36 26,46 34,46 28,58"/>
+  </svg>`,
+};
+
+// --- 降水テキスト用の小さい傘SVG ---
+const precipIconSvg = `<svg class="precip-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v12M8 2a6 6 0 016 6H2a6 6 0 016-6zM6 14a2 2 0 004 0"/></svg>`;
+
+// --- 引用データ ---
+const quotes = {
+  clear: [
+    { text: "さわやかな九月一日の朝でした。青ぞらで風がどうと鳴り、日光は運動場いっぱいでした。", author: "宮沢賢治", title: "風の又三郎" },
+    { text: "ある日の事でございます。御釈迦様は極楽の蓮池のふちを、独りでぶらぶら御歩きになっていらっしゃいました。池の中に咲いている蓮の花は、みんな玉のようにまっ白で、そのまん中にある金色の蕊からは、何とも云えない好い匂が、絶間なくあたりへ溢れて居ります。", author: "芥川龍之介", title: "蜘蛛の糸" },
+  ],
+  sunny: [
+    { text: "霧がふっと切れました。日の光がさっと流れてはいりました。草からはしずくがきらきら落ち、すべての葉も茎も花も、ことしの終わりの日の光を吸っています。", author: "宮沢賢治", title: "風の又三郎" },
+    { text: "ことに門の上の空が、夕焼けであかくなる時には、それが胡麻をまいたようにはっきり見えた。", author: "芥川龍之介", title: "羅生門" },
+  ],
+  cloudy: [
+    { text: "雨は、羅生門をつつんで、遠くから、ざあっと云う音をあつめて来る。夕闇は次第に空を低くして、見上げると、門の屋根が、斜につき出した甍の先に、重たくうす暗い雲を支えている。", author: "芥川龍之介", title: "羅生門" },
+    { text: "そのときはもうそらがいっぱいの黒い雲で、楊も変に白っぽくなり、山の草はしんしんとくらくなり、そこらはなんとも言われない恐ろしい景色にかわっていました。", author: "宮沢賢治", title: "風の又三郎" },
+  ],
+  fog: [
+    { text: "空はたいへん暗く重くなり、まわりがぼうっとかすんで来ました。冷たい風が、草を渡りはじめ、もう雲や霧が切れ切れになって目の前をぐんぐん通り過ぎて行きました。", author: "宮沢賢治", title: "風の又三郎" },
+    { text: "黒板から降る白墨の粉のような、暗い冷たい霧の粒が、そこら一面踊りまわり、あたりがにわかにシインとして、陰気に陰気になりました。", author: "宮沢賢治", title: "風の又三郎" },
+  ],
+  drizzle: [
+    { text: "或日の暮方の事である。一人の下人が、羅生門の下で雨やみを待っていた。広い門の下には、この男のほかに誰もいない。", author: "芥川龍之介", title: "羅生門" },
+    { text: "雨ニモマケズ\n風ニモマケズ\n雪ニモ夏ノ暑サニモマケヌ\n丈夫ナカラダヲモチ", author: "宮沢賢治", title: "〔雨ニモマケズ〕" },
+  ],
+  rain: [
+    { text: "そして間もなく、雨と黄昏とがいっしょに襲いかかったのです。実にはげしい雷雨になりました。いなびかりは、まるでこんな憐れな旅のものなどを漂白してしまいそう、並木の青い葉がむしゃくしゃにむしられて、雨のつぶと一緒に堅いみちを叩き、枝までがガリガリ引き裂かれて降りかかりました。", author: "宮沢賢治", title: "ガドルフの百合" },
+    { text: "申の刻下りからふり出した雨は、いまだに上るけしきがない。そこで、下人は、何をおいても差当り明日の暮しをどうにかしようとして、さっきから朱雀大路にふる雨の音を、聞くともなく聞いていたのである。", author: "芥川龍之介", title: "羅生門" },
+  ],
+  snow: [
+    { text: "津軽の雪\nこな雪 つぶ雪 わた雪 みづ雪\nかた雪 ざらめ雪 こほり雪", author: "太宰治", title: "津軽" },
+    { text: "冬、雪の降る夜も、傘をさして弟と二人でこの桟橋に行つた。深い港の海に、雪がひそひそ降つてゐるのはいいものだ。", author: "太宰治", title: "津軽" },
+  ],
+  thunder: [
+    { text: "けれども間もなく全くの夜になりました。空のあっちでもこっちでも、雷が素敵に大きな咆哮をやり、電光のせわしいことはまるで夜の大空の意識の明滅のようでした。", author: "宮沢賢治", title: "ガドルフの百合" },
+    { text: "けれども窓の外では、いっぱいに咲いた白百合が、十本ばかり息もつけない嵐の中に、その稲妻の八分一秒を、まるでかがやいてじっと立っていたのです。", author: "宮沢賢治", title: "ガドルフの百合" },
+  ],
+};
+
+const weatherMeta = {
+  clear:   { temp: 28, precip: null },
+  sunny:   { temp: 22, precip: null },
+  cloudy:  { temp: 16, precip: "3時間後に雨が降ります" },
+  fog:     { temp: 12, precip: null },
+  drizzle: { temp: 14, precip: "あと1時間で雨が止みます" },
+  rain:    { temp: 13, precip: "あと2時間で雨が止みます" },
+  snow:    { temp: -2, precip: null },
+  thunder: { temp: 18, precip: "あと30分で雨が止みます" },
+};
+
+const categories = Object.keys(weatherMeta);
+let currentIdx = 0;
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function render(category) {
+  const meta = weatherMeta[category];
+  const quote = pick(quotes[category]);
+
+  // アイコン
+  document.getElementById("weather-icon").innerHTML = weatherIcons[category];
+  document.getElementById("weather-temp").textContent = meta.temp + "°C";
+
+  // 引用
+  const qt = document.getElementById("quote-text");
+  qt.style.opacity = "0";
+  setTimeout(() => {
+    qt.innerHTML = quote.text.replace(/\n/g, "<br>");
+    qt.style.opacity = "1";
+  }, 250);
+
+  // 著者
+  document.getElementById("quote-author").textContent = quote.author;
+  document.getElementById("quote-title").textContent = quote.title;
+
+  // 降水テキスト
+  const precipEl = document.getElementById("precip-info");
+  if (meta.precip) {
+    precipEl.innerHTML = precipIconSvg + meta.precip;
+    precipEl.style.opacity = "1";
+  } else {
+    precipEl.style.opacity = "0";
+  }
+
+  // 背景
+  document.body.className = "weather-" + category;
+}
+
+// --- タップ切り替え ---
+document.getElementById("weather-block").addEventListener("click", () => {
+  currentIdx = (currentIdx + 1) % categories.length;
+  render(categories[currentIdx]);
+});
+
+// --- シェアボタン ---
+document.getElementById("share-btn").addEventListener("click", () => {
+  alert("共有：「空を読む」透かし入り画像を生成 → シェアシート");
+});
+
+// --- 初期表示 ---
+render(categories[0]);
+</script>
+</body>
+</html>
