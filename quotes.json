@@ -1,0 +1,605 @@
+{
+  "version": "0.1.0",
+  "quotes": [
+    {
+      "id": "miyazawa_kazenoMatasaburo_01",
+      "text": "さわやかな九月一日の朝でした。青ぞらで風がどうと鳴り、日光は運動場いっぱいでした。",
+      "author": "宮沢賢治",
+      "title": "風の又三郎",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["clear"],
+        "timeOfDay": ["morning"],
+        "season": ["autumn"],
+        "tempFeel": ["warm"],
+        "celestial": [],
+        "tags": ["wind", "school"]
+      },
+      "pin": {
+        "date": "09-01",
+        "location": []
+      }
+    },
+    {
+      "id": "akutagawa_kumonoito_01",
+      "text": "ある日の事でございます。御釈迦様は極楽の蓮池のふちを、独りでぶらぶら御歩きになっていらっしゃいました。池の中に咲いている蓮の花は、みんな玉のようにまっ白で、そのまん中にある金色の蕊からは、何とも云えない好い匂が、絶間なくあたりへ溢れて居ります。",
+      "author": "芥川龍之介",
+      "title": "蜘蛛の糸",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["clear", "sunny"],
+        "timeOfDay": ["daytime"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["lotus"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_kazenoMatasaburo_02",
+      "text": "霧がふっと切れました。日の光がさっと流れてはいりました。草からはしずくがきらきら落ち、すべての葉も茎も花も、ことしの終わりの日の光を吸っています。",
+      "author": "宮沢賢治",
+      "title": "風の又三郎",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["sunny"],
+        "timeOfDay": ["morning", "daytime"],
+        "season": ["autumn"],
+        "tempFeel": ["mild"],
+        "celestial": [],
+        "tags": ["grass", "light"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "akutagawa_rashomon_01",
+      "text": "雨は、羅生門をつつんで、遠くから、ざあっと云う音をあつめて来る。夕闇は次第に空を低くして、見上げると、門の屋根が、斜につき出した甍の先に、重たくうす暗い雲を支えている。",
+      "author": "芥川龍之介",
+      "title": "羅生門",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["rain", "cloudy"],
+        "timeOfDay": ["evening"],
+        "season": [],
+        "tempFeel": ["cool"],
+        "celestial": [],
+        "tags": ["city"]
+      },
+      "pin": {
+        "date": null,
+        "location": ["京都府"]
+      }
+    },
+    {
+      "id": "miyazawa_kazenoMatasaburo_03",
+      "text": "そのときはもうそらがいっぱいの黒い雲で、楊も変に白っぽくなり、山の草はしんしんとくらくなり、そこらはなんとも言われない恐ろしい景色にかわっていました。",
+      "author": "宮沢賢治",
+      "title": "風の又三郎",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["cloudy", "thunder"],
+        "timeOfDay": ["daytime"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["mountain", "grass"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_kazenoMatasaburo_04",
+      "text": "空はたいへん暗く重くなり、まわりがぼうっとかすんで来ました。冷たい風が、草を渡りはじめ、もう雲や霧が切れ切れになって目の前をぐんぐん通り過ぎて行きました。",
+      "author": "宮沢賢治",
+      "title": "風の又三郎",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["fog", "cloudy"],
+        "timeOfDay": [],
+        "season": [],
+        "tempFeel": ["cool", "cold"],
+        "celestial": [],
+        "tags": ["wind", "grass"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_kazenoMatasaburo_05",
+      "text": "黒板から降る白墨の粉のような、暗い冷たい霧の粒が、そこら一面踊りまわり、あたりがにわかにシインとして、陰気に陰気になりました。",
+      "author": "宮沢賢治",
+      "title": "風の又三郎",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["fog"],
+        "timeOfDay": [],
+        "season": [],
+        "tempFeel": ["cold"],
+        "celestial": [],
+        "tags": ["school"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "akutagawa_rashomon_02",
+      "text": "或日の暮方の事である。一人の下人が、羅生門の下で雨やみを待っていた。広い門の下には、この男のほかに誰もいない。",
+      "author": "芥川龍之介",
+      "title": "羅生門",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["drizzle", "rain"],
+        "timeOfDay": ["evening"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["city"]
+      },
+      "pin": {
+        "date": null,
+        "location": ["京都府"]
+      }
+    },
+    {
+      "id": "miyazawa_amenimo_01",
+      "text": "雨ニモマケズ\n風ニモマケズ\n雪ニモ夏ノ暑サニモマケヌ\n丈夫ナカラダヲモチ",
+      "author": "宮沢賢治",
+      "title": "〔雨ニモマケズ〕",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["rain", "drizzle", "snow"],
+        "timeOfDay": [],
+        "season": [],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["wind"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_gadorf_01",
+      "text": "そして間もなく、雨と黄昏とがいっしょに襲いかかったのです。実にはげしい雷雨になりました。いなびかりは、まるでこんな憐れな旅のものなどを漂白してしまいそう、並木の青い葉がむしゃくしゃにむしられて、雨のつぶと一緒に堅いみちを叩き、枝までがガリガリ引き裂かれて降りかかりました。",
+      "author": "宮沢賢治",
+      "title": "ガドルフの百合",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["thunder", "rain"],
+        "timeOfDay": ["evening"],
+        "season": ["summer"],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["wind", "forest"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "akutagawa_rashomon_03",
+      "text": "申の刻下りからふり出した雨は、いまだに上るけしきがない。そこで、下人は、何をおいても差当り明日の暮しをどうにかしようとして、さっきから朱雀大路にふる雨の音を、聞くともなく聞いていたのである。",
+      "author": "芥川龍之介",
+      "title": "羅生門",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["rain"],
+        "timeOfDay": ["evening"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["city"]
+      },
+      "pin": {
+        "date": null,
+        "location": ["京都府"]
+      }
+    },
+    {
+      "id": "dazai_tsugaru_01",
+      "text": "津軽の雪\nこな雪 つぶ雪 わた雪 みづ雪\nかた雪 ざらめ雪 こほり雪",
+      "author": "太宰治",
+      "title": "津軽",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["snow"],
+        "timeOfDay": [],
+        "season": ["winter"],
+        "tempFeel": ["cold"],
+        "celestial": [],
+        "tags": []
+      },
+      "pin": {
+        "date": null,
+        "location": ["青森県", "津軽"]
+      }
+    },
+    {
+      "id": "dazai_tsugaru_02",
+      "text": "冬、雪の降る夜も、傘をさして弟と二人でこの桟橋に行つた。深い港の海に、雪がひそひそ降つてゐるのはいいものだ。",
+      "author": "太宰治",
+      "title": "津軽",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["snow"],
+        "timeOfDay": ["night"],
+        "season": ["winter"],
+        "tempFeel": ["cold"],
+        "celestial": [],
+        "tags": ["sea"]
+      },
+      "pin": {
+        "date": null,
+        "location": ["青森県", "津軽"]
+      }
+    },
+    {
+      "id": "miyazawa_gadorf_02",
+      "text": "けれども間もなく全くの夜になりました。空のあっちでもこっちでも、雷が素敵に大きな咆哮をやり、電光のせわしいことはまるで夜の大空の意識の明滅のようでした。",
+      "author": "宮沢賢治",
+      "title": "ガドルフの百合",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["thunder"],
+        "timeOfDay": ["night"],
+        "season": ["summer"],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": []
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_gadorf_03",
+      "text": "けれども窓の外では、いっぱいに咲いた白百合が、十本ばかり息もつけない嵐の中に、その稲妻の八分一秒を、まるでかがやいてじっと立っていたのです。",
+      "author": "宮沢賢治",
+      "title": "ガドルフの百合",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["thunder"],
+        "timeOfDay": ["night"],
+        "season": ["summer"],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["flower"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_tsukiyo_01",
+      "text": "九日の月がそらにかかっていました。そしてうろこ雲が空いっぱいでした。うろこぐもはみんな、もう月のひかりがはらわたの底までもしみとおってよろよろするというふうでした。",
+      "author": "宮沢賢治",
+      "title": "月夜のでんしんばしら",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["moon", "nightcloudy"],
+        "timeOfDay": ["night"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": ["moon_half"],
+        "tags": []
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "nakajima_sangetsuki_01",
+      "text": "時に、残月、光冷ややかに、白露は地に滋く、樹間を渡る冷風はすでに暁の近きを告げていた。人々はもはや、事の奇異を忘れ、粛然として、この詩人の薄幸を嘆じた。",
+      "author": "中島敦",
+      "title": "山月記",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["moon"],
+        "timeOfDay": ["dawn"],
+        "season": [],
+        "tempFeel": ["cold"],
+        "celestial": ["moon_waning"],
+        "tags": ["forest"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_ginga_01",
+      "text": "青白く光る銀河の岸に、銀いろの空のすすきが、もうまるでいちめん、風にさらさらさらさら、ゆられてうごいて、波を立てているのでした。",
+      "author": "宮沢賢治",
+      "title": "銀河鉄道の夜",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["stars"],
+        "timeOfDay": ["night"],
+        "season": ["summer", "autumn"],
+        "tempFeel": ["cool"],
+        "celestial": ["milkyway"],
+        "tags": ["wind", "river"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_yodaka_01",
+      "text": "もうすっかり夜になって、空は青ぐろく、いちめんの星がまたたいていました。よだかは空へ飛びあがりました。",
+      "author": "宮沢賢治",
+      "title": "よだかの星",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["stars"],
+        "timeOfDay": ["night"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": ["stars"],
+        "tags": []
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_yodaka_02",
+      "text": "しだの葉は、よあけのきりをすって、青くつめたくゆれました。よだかは高くきしきしきしと鳴きました。",
+      "author": "宮沢賢治",
+      "title": "よだかの星",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["sunrise"],
+        "timeOfDay": ["dawn"],
+        "season": [],
+        "tempFeel": ["cool"],
+        "celestial": [],
+        "tags": ["forest"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "shimazaki_hakai_01",
+      "text": "朝じめりのした街道の土を踏んで、深い霧の中を辿って行った時は、遠近に鶏の鳴き交わす声も聞こえる。",
+      "author": "島崎藤村",
+      "title": "破戒",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["fog", "sunrise"],
+        "timeOfDay": ["dawn", "morning"],
+        "season": [],
+        "tempFeel": ["cool"],
+        "celestial": [],
+        "tags": []
+      },
+      "pin": {
+        "date": null,
+        "location": ["長野県"]
+      }
+    },
+    {
+      "id": "dazai_hashire_01",
+      "text": "斜陽は赤い光を、樹々の葉に投じ、葉も枝も燃えるばかりに輝いている。日没までには、まだ間がある。",
+      "author": "太宰治",
+      "title": "走れメロス",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["sunset"],
+        "timeOfDay": ["evening", "dusk"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["forest"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "akutagawa_rashomon_04",
+      "text": "ことに門の上の空が、夕焼けであかくなる時には、それが胡麻をまいたようにはっきり見えた。",
+      "author": "芥川龍之介",
+      "title": "羅生門",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["sunset"],
+        "timeOfDay": ["evening", "dusk"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["city"]
+      },
+      "pin": {
+        "date": null,
+        "location": ["京都府"]
+      }
+    },
+    {
+      "id": "natsume_sanshiro_01",
+      "text": "迷羊、迷羊。と美禰子が小さな声で云った。空を見ると、大きな白い雲がぽかりと浮かんでいた。",
+      "author": "夏目漱石",
+      "title": "三四郎",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["sunny"],
+        "timeOfDay": ["daytime"],
+        "season": ["autumn"],
+        "tempFeel": ["mild"],
+        "celestial": [],
+        "tags": []
+      },
+      "pin": {
+        "date": null,
+        "location": ["東京都"]
+      }
+    },
+    {
+      "id": "miyazawa_kazenoMatasaburo_06",
+      "text": "空がくるくるくるっと白く揺らぎ、草がバラッと一度にしずくを払いました。",
+      "author": "宮沢賢治",
+      "title": "風の又三郎",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["cloudy"],
+        "timeOfDay": ["daytime"],
+        "season": ["autumn"],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": ["wind", "grass"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_futago_01",
+      "text": "あまのがわの西の岸にすきとおった硝子のような水の関をおいて一人のこどもの星が夜の空から関の水にうつったお空をのぞきこんでおりました。",
+      "author": "宮沢賢治",
+      "title": "双子の星",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["stars"],
+        "timeOfDay": ["night"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": ["milkyway", "stars"],
+        "tags": ["river"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "nakajima_sangetsuki_02",
+      "text": "虎は、既に白く光を失った月を仰いで、二声三声咆哮したかと思うと、又、元の叢に躍り入って、再びその姿を見なかった。",
+      "author": "中島敦",
+      "title": "山月記",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["moon"],
+        "timeOfDay": ["dawn"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": ["moon_waning"],
+        "tags": ["forest"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "akutagawa_toshishun_01",
+      "text": "或春の日暮です。唐の都洛陽の西の門の下に、ぼんやり空を仰いでいる、一人の若者がありました。",
+      "author": "芥川龍之介",
+      "title": "杜子春",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["sunset", "sunny"],
+        "timeOfDay": ["evening", "dusk"],
+        "season": ["spring"],
+        "tempFeel": ["warm"],
+        "celestial": [],
+        "tags": ["city"]
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "dazai_joseito_01",
+      "text": "朝はなんだかしらじらしい。悲しいことが、たくさんたくさん胸に浮かんで来て、についこにこ笑いたくなる。",
+      "author": "太宰治",
+      "title": "女生徒",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["sunrise", "clear"],
+        "timeOfDay": ["morning", "dawn"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": [],
+        "tags": []
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    },
+    {
+      "id": "miyazawa_yodaka_03",
+      "text": "そしてよだかははっきりまなこをひらきました。そして自分のからだがいま燐の火のような青い美しい光になって、しずかに燃えているのを見ました。すぐとなりは、カシオピア座でした。天の川の青じろいひかりが、すぐうしろになっていました。",
+      "author": "宮沢賢治",
+      "title": "よだかの星",
+      "audibleAsin": null,
+      "kindleAsin": null,
+      "match": {
+        "weather": ["stars"],
+        "timeOfDay": ["night"],
+        "season": [],
+        "tempFeel": [],
+        "celestial": ["stars", "milkyway"],
+        "tags": []
+      },
+      "pin": {
+        "date": null,
+        "location": []
+      }
+    }
+  ]
+}
