@@ -463,16 +463,16 @@
     },
     {
       "id": "natsume_sanshiro_01",
-      "text": "迷羊、迷羊。と美禰子が小さな声で云った。空を見ると、大きな白い雲がぽかりと浮かんでいた。",
+      "text": "空は深く澄んで、澄んだなかに、西の果から焼ける火の炎が、薄赤く吹き返してきて、三四郎の頭の上までほてっているように思われた。",
       "author": "夏目漱石",
       "title": "三四郎",
       "audibleAsin": null,
       "kindleAsin": null,
       "match": {
-        "weather": ["sunny"],
-        "timeOfDay": ["daytime"],
+        "weather": ["clear", "sunset"],
+        "timeOfDay": ["evening", "dusk"],
         "season": ["autumn"],
-        "tempFeel": ["mild"],
+        "tempFeel": ["warm"],
         "celestial": [],
         "tags": []
       },
