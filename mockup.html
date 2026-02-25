@@ -17,6 +17,7 @@ body{
 }
 
 /* --- 単色背景 --- */
+/* 昼 */
 body.weather-clear{background-color:#3a7ab5}
 body.weather-sunny{background-color:#4a88aa}
 body.weather-cloudy{background-color:#6a7580}
@@ -25,6 +26,12 @@ body.weather-drizzle{background-color:#546a78}
 body.weather-rain{background-color:#455868}
 body.weather-snow{background-color:#708090}
 body.weather-thunder{background-color:#2e3a48}
+/* 夜 */
+body.weather-moon{background-color:#1a2744}
+body.weather-stars{background-color:#0f1b2d}
+/* 朝焼け・夕焼け */
+body.weather-sunrise{background-color:#c47a5a}
+body.weather-sunset{background-color:#8b4563}
 
 /* --- ポスターレイアウト --- */
 .poster{
@@ -205,22 +212,16 @@ body.weather-thunder{background-color:#2e3a48}
 const weatherIcons = {
   clear: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
     <circle cx="32" cy="32" r="12"/>
-    <line x1="32" y1="4" x2="32" y2="12"/>
-    <line x1="32" y1="52" x2="32" y2="60"/>
-    <line x1="4" y1="32" x2="12" y2="32"/>
-    <line x1="52" y1="32" x2="60" y2="32"/>
-    <line x1="12.2" y1="12.2" x2="17.9" y2="17.9"/>
-    <line x1="46.1" y1="46.1" x2="51.8" y2="51.8"/>
-    <line x1="51.8" y1="12.2" x2="46.1" y2="17.9"/>
-    <line x1="17.9" y1="46.1" x2="12.2" y2="51.8"/>
+    <line x1="32" y1="4" x2="32" y2="12"/><line x1="32" y1="52" x2="32" y2="60"/>
+    <line x1="4" y1="32" x2="12" y2="32"/><line x1="52" y1="32" x2="60" y2="32"/>
+    <line x1="12.2" y1="12.2" x2="17.9" y2="17.9"/><line x1="46.1" y1="46.1" x2="51.8" y2="51.8"/>
+    <line x1="51.8" y1="12.2" x2="46.1" y2="17.9"/><line x1="17.9" y1="46.1" x2="12.2" y2="51.8"/>
   </svg>`,
   sunny: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
     <circle cx="28" cy="30" r="10"/>
-    <line x1="28" y1="6" x2="28" y2="13"/>
-    <line x1="28" y1="47" x2="28" y2="54"/>
+    <line x1="28" y1="6" x2="28" y2="13"/><line x1="28" y1="47" x2="28" y2="54"/>
     <line x1="6" y1="30" x2="13" y2="30"/>
-    <line x1="12.4" y1="14.4" x2="17.4" y2="19.4"/>
-    <line x1="43.6" y1="14.4" x2="38.6" y2="19.4"/>
+    <line x1="12.4" y1="14.4" x2="17.4" y2="19.4"/><line x1="43.6" y1="14.4" x2="38.6" y2="19.4"/>
     <line x1="12.4" y1="45.6" x2="17.4" y2="40.6"/>
     <path d="M40 36a10 10 0 015-2c5.5 0 10 4 10 9H28"/>
   </svg>`,
@@ -228,37 +229,90 @@ const weatherIcons = {
     <path d="M20 44h28a10 10 0 000-20 10 10 0 00-9.5 7 14 14 0 00-26.5 9A8 8 0 0020 44z"/>
   </svg>`,
   fog: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
-    <line x1="12" y1="24" x2="52" y2="24"/>
-    <line x1="8" y1="32" x2="56" y2="32"/>
-    <line x1="14" y1="40" x2="50" y2="40"/>
-    <line x1="10" y1="48" x2="54" y2="48"/>
+    <line x1="12" y1="24" x2="52" y2="24"/><line x1="8" y1="32" x2="56" y2="32"/>
+    <line x1="14" y1="40" x2="50" y2="40"/><line x1="10" y1="48" x2="54" y2="48"/>
   </svg>`,
   drizzle: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
     <path d="M18 36h28a9 9 0 000-18 9 9 0 00-8.5 6 12 12 0 00-23.5 8A7 7 0 0018 36z"/>
-    <line x1="22" y1="42" x2="20" y2="48"/>
-    <line x1="34" y1="42" x2="32" y2="48"/>
-    <line x1="46" y1="42" x2="44" y2="48"/>
+    <line x1="22" y1="42" x2="20" y2="48"/><line x1="34" y1="42" x2="32" y2="48"/><line x1="46" y1="42" x2="44" y2="48"/>
   </svg>`,
   rain: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
     <path d="M18 34h28a9 9 0 000-18 9 9 0 00-8.5 6 12 12 0 00-23.5 8A7 7 0 0018 34z"/>
-    <line x1="20" y1="40" x2="16" y2="50"/>
-    <line x1="28" y1="40" x2="24" y2="50"/>
-    <line x1="36" y1="40" x2="32" y2="50"/>
-    <line x1="44" y1="40" x2="40" y2="50"/>
+    <line x1="20" y1="40" x2="16" y2="50"/><line x1="28" y1="40" x2="24" y2="50"/>
+    <line x1="36" y1="40" x2="32" y2="50"/><line x1="44" y1="40" x2="40" y2="50"/>
   </svg>`,
   snow: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
     <path d="M18 34h28a9 9 0 000-18 9 9 0 00-8.5 6 12 12 0 00-23.5 8A7 7 0 0018 34z"/>
-    <circle cx="22" cy="44" r="1.5" fill="white" stroke="none"/>
-    <circle cx="32" cy="48" r="1.5" fill="white" stroke="none"/>
-    <circle cx="42" cy="44" r="1.5" fill="white" stroke="none"/>
-    <circle cx="27" cy="52" r="1.5" fill="white" stroke="none"/>
+    <circle cx="22" cy="44" r="1.5" fill="white" stroke="none"/><circle cx="32" cy="48" r="1.5" fill="white" stroke="none"/>
+    <circle cx="42" cy="44" r="1.5" fill="white" stroke="none"/><circle cx="27" cy="52" r="1.5" fill="white" stroke="none"/>
     <circle cx="37" cy="52" r="1.5" fill="white" stroke="none"/>
   </svg>`,
   thunder: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M18 32h28a9 9 0 000-18 9 9 0 00-8.5 6 12 12 0 00-23.5 8A7 7 0 0018 32z"/>
     <polyline points="30,36 26,46 34,46 28,58"/>
   </svg>`,
+  // --- 朝焼け・夕焼け ---
+  sunrise: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <path d="M8 44h48"/>
+    <circle cx="32" cy="44" r="12"/>
+    <line x1="32" y1="18" x2="32" y2="24"/><line x1="14" y1="28" x2="18.5" y2="32.5"/>
+    <line x1="50" y1="28" x2="45.5" y2="32.5"/>
+    <polyline points="26,16 32,10 38,16"/>
+  </svg>`,
+  sunset: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <path d="M8 44h48"/>
+    <circle cx="32" cy="44" r="12"/>
+    <line x1="32" y1="18" x2="32" y2="24"/><line x1="14" y1="28" x2="18.5" y2="32.5"/>
+    <line x1="50" y1="28" x2="45.5" y2="32.5"/>
+    <polyline points="26,10 32,16 38,10"/>
+  </svg>`,
+  // --- 星空 ---
+  stars: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="white" stroke="white" stroke-width="1" stroke-linecap="round">
+    <circle cx="20" cy="16" r="2"/><circle cx="48" cy="12" r="1.5"/><circle cx="12" cy="38" r="1.2"/>
+    <circle cx="52" cy="34" r="1.8"/><circle cx="36" cy="8" r="1"/><circle cx="28" cy="50" r="1.3"/>
+    <circle cx="44" cy="48" r="1"/><circle cx="8" cy="26" r="0.8"/><circle cx="56" cy="24" r="1"/>
+    <polygon points="32,22 33.5,28 40,28 35,32 37,38 32,34 27,38 29,32 24,28 30.5,28" fill="white" stroke="none"/>
+  </svg>`,
 };
+
+// --- 月齢アイコン生成（SVG） ---
+// phase: 0=新月 → 0.5=満月 → 1=新月（0〜1の循環値）
+function moonSvg(phase) {
+  // 三日月〜満月〜有明を一つの関数で描画
+  // 右側が光る → 満月 → 左側が光る
+  const r = 14;
+  const cx = 32, cy = 32;
+  if (phase < 0.03 || phase > 0.97) {
+    // 新月 → 星空アイコンを使う
+    return weatherIcons.stars;
+  }
+  // sweepとカーブで月の形を描く
+  // illuminated fraction
+  let f = phase <= 0.5 ? phase * 2 : (1 - phase) * 2; // 0→1→0
+  let curveX = r * (1 - 2 * f); // +r(三日月) → -r(満月手前) → +r
+  let svg = `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2">`;
+  if (phase <= 0.5) {
+    // 新月→満月（右側が光る = 右弦）
+    svg += `<path d="M${cx} ${cy-r} A${r} ${r} 0 1 1 ${cx} ${cy+r} A${Math.abs(curveX)} ${r} 0 0 ${curveX > 0 ? 0 : 1} ${cx} ${cy-r}Z" fill="rgba(255,255,255,0.15)" stroke="white"/>`;
+  } else {
+    // 満月→新月（左側が光る = 左弦）
+    svg += `<path d="M${cx} ${cy-r} A${r} ${r} 0 1 0 ${cx} ${cy+r} A${Math.abs(curveX)} ${r} 0 0 ${curveX > 0 ? 1 : 0} ${cx} ${cy-r}Z" fill="rgba(255,255,255,0.15)" stroke="white"/>`;
+  }
+  svg += `</svg>`;
+  return svg;
+}
+
+// モックアップ用の月齢プリセット
+const moonPhases = [
+  { name: "三日月",  phase: 0.10 },
+  { name: "上弦",    phase: 0.25 },
+  { name: "十三夜",  phase: 0.42 },
+  { name: "満月",    phase: 0.50 },
+  { name: "更待月",  phase: 0.63 },
+  { name: "下弦",    phase: 0.75 },
+  { name: "有明月",  phase: 0.90 },
+];
+let moonIdx = 0;
 
 // --- 降水テキスト用の小さい傘SVG ---
 const precipIconSvg = `<svg class="precip-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v12M8 2a6 6 0 016 6H2a6 6 0 016-6zM6 14a2 2 0 004 0"/></svg>`;
@@ -297,6 +351,26 @@ const quotes = {
     { text: "けれども間もなく全くの夜になりました。空のあっちでもこっちでも、雷が素敵に大きな咆哮をやり、電光のせわしいことはまるで夜の大空の意識の明滅のようでした。", author: "宮沢賢治", title: "ガドルフの百合" },
     { text: "けれども窓の外では、いっぱいに咲いた白百合が、十本ばかり息もつけない嵐の中に、その稲妻の八分一秒を、まるでかがやいてじっと立っていたのです。", author: "宮沢賢治", title: "ガドルフの百合" },
   ],
+  // --- 月夜 ---
+  moon: [
+    { text: "九日の月がそらにかかっていました。そしてうろこ雲が空いっぱいでした。うろこぐもはみんな、もう月のひかりがはらわたの底までもしみとおってよろよろするというふうでした。", author: "宮沢賢治", title: "月夜のでんしんばしら" },
+    { text: "時に、残月、光冷ややかに、白露は地に滋く、樹間を渡る冷風はすでに暁の近きを告げていた。人々はもはや、事の奇異を忘れ、粛然として、この詩人の薄幸を嘆じた。", author: "中島敦", title: "山月記" },
+  ],
+  // --- 星空 ---
+  stars: [
+    { text: "青白く光る銀河の岸に、銀いろの空のすすきが、もうまるでいちめん、風にさらさらさらさら、ゆられてうごいて、波を立てているのでした。", author: "宮沢賢治", title: "銀河鉄道の夜" },
+    { text: "もうすっかり夜になって、空は青ぐろく、いちめんの星がまたたいていました。よだかは空へ飛びあがりました。", author: "宮沢賢治", title: "よだかの星" },
+  ],
+  // --- 朝焼け ---
+  sunrise: [
+    { text: "しだの葉は、よあけのきりをすって、青くつめたくゆれました。よだかは高くきしきしきしと鳴きました。", author: "宮沢賢治", title: "よだかの星" },
+    { text: "朝じめりのした街道の土を踏んで、深い霧の中を辿って行った時は、遠近に鶏の鳴き交わす声も聞こえる。", author: "島崎藤村", title: "破戒" },
+  ],
+  // --- 夕焼け ---
+  sunset: [
+    { text: "斜陽は赤い光を、樹々の葉に投じ、葉も枝も燃えるばかりに輝いている。日没までには、まだ間がある。", author: "太宰治", title: "走れメロス" },
+    { text: "ことに門の上の空が、夕焼けであかくなる時には、それが胡麻をまいたようにはっきり見えた。", author: "芥川龍之介", title: "羅生門" },
+  ],
 };
 
 const weatherMeta = {
@@ -308,6 +382,10 @@ const weatherMeta = {
   rain:    { temp: 13, precip: "あと2時間で雨が止みます" },
   snow:    { temp: -2, precip: null },
   thunder: { temp: 18, precip: "あと30分で雨が止みます" },
+  moon:    { temp: 15, precip: null },
+  stars:   { temp: 12, precip: null },
+  sunrise: { temp: 10, precip: null },
+  sunset:  { temp: 18, precip: null },
 };
 
 const categories = Object.keys(weatherMeta);
@@ -320,7 +398,12 @@ function render(category) {
   const quote = pick(quotes[category]);
 
   // アイコン
-  document.getElementById("weather-icon").innerHTML = weatherIcons[category];
+  if (category === "moon") {
+    const mp = moonPhases[moonIdx];
+    document.getElementById("weather-icon").innerHTML = moonSvg(mp.phase);
+  } else {
+    document.getElementById("weather-icon").innerHTML = weatherIcons[category];
+  }
   document.getElementById("weather-temp").textContent = meta.temp + "°C";
 
   // 引用
@@ -350,6 +433,15 @@ function render(category) {
 
 // --- タップ切り替え ---
 document.getElementById("weather-block").addEventListener("click", () => {
+  if (categories[currentIdx] === "moon") {
+    // 月夜の場合、まず月齢を順に切り替え → 全部見たら次のカテゴリへ
+    moonIdx++;
+    if (moonIdx < moonPhases.length) {
+      render("moon");
+      return;
+    }
+    moonIdx = 0; // リセット
+  }
   currentIdx = (currentIdx + 1) % categories.length;
   render(categories[currentIdx]);
 });
