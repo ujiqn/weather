@@ -29,6 +29,7 @@ body.weather-thunder{background-color:#2e3a48}
 /* 夜 */
 body.weather-moon{background-color:#1a2744}
 body.weather-stars{background-color:#0f1b2d}
+body.weather-nightcloudy{background-color:#1e2a3a}
 /* 朝焼け・夕焼け */
 body.weather-sunrise{background-color:#c47a5a}
 body.weather-sunset{background-color:#8b4563}
@@ -37,7 +38,7 @@ body.weather-sunset{background-color:#8b4563}
 .poster{
   height:100dvh;display:flex;flex-direction:column;
   align-items:center;
-  padding:calc(env(safe-area-inset-top, 0px) + 2.5rem) 2rem calc(env(safe-area-inset-bottom, 0px) + 4.5rem);
+  padding:calc(env(safe-area-inset-top, 0px) + 1.5rem) 2rem calc(env(safe-area-inset-bottom, 0px) + 4.5rem);
   position:relative;
 }
 
@@ -146,6 +147,16 @@ body.weather-sunset{background-color:#8b4563}
   opacity:.6;
 }
 
+/* 日時表示 */
+.datetime{
+  font-family:"Noto Sans JP",sans-serif;
+  text-align:center;
+  font-size:.6rem;font-weight:300;
+  color:rgba(255,255,255,.3);
+  margin-top:.6rem;
+  letter-spacing:.08em;
+}
+
 /* シェアボタン */
 .share-btn{
   position:absolute;
@@ -195,6 +206,9 @@ body.weather-sunset{background-color:#8b4563}
 
     <!-- 降水テキスト -->
     <div class="precip-info" id="precip-info"></div>
+
+    <!-- 日時 -->
+    <div class="datetime" id="datetime"></div>
 
     <!-- シェアボタン -->
     <button class="share-btn" id="share-btn" title="共有">
@@ -257,14 +271,17 @@ const weatherIcons = {
     <circle cx="32" cy="44" r="12"/>
     <line x1="32" y1="18" x2="32" y2="24"/><line x1="14" y1="28" x2="18.5" y2="32.5"/>
     <line x1="50" y1="28" x2="45.5" y2="32.5"/>
-    <polyline points="26,16 32,10 38,16"/>
   </svg>`,
   sunset: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
     <path d="M8 44h48"/>
     <circle cx="32" cy="44" r="12"/>
     <line x1="32" y1="18" x2="32" y2="24"/><line x1="14" y1="28" x2="18.5" y2="32.5"/>
     <line x1="50" y1="28" x2="45.5" y2="32.5"/>
-    <polyline points="26,10 32,16 38,10"/>
+  </svg>`,
+  // --- 夜曇り（月+雲） ---
+  nightcloudy: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+    <path d="M38 18a9 9 0 01-14 7.5"/>
+    <path d="M22 44h24a9 9 0 000-18 9 9 0 00-8.5 6 11 11 0 00-21.5 8A6 6 0 0022 44z"/>
   </svg>`,
   // --- 星空 ---
   stars: `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="white" stroke="white" stroke-width="1" stroke-linecap="round">
@@ -275,28 +292,21 @@ const weatherIcons = {
   </svg>`,
 };
 
-// --- 月齢アイコン生成（SVG） ---
+// --- 月齢アイコン生成（SVG・線のみ） ---
 // phase: 0=新月 → 0.5=満月 → 1=新月（0〜1の循環値）
 function moonSvg(phase) {
-  // 三日月〜満月〜有明を一つの関数で描画
-  // 右側が光る → 満月 → 左側が光る
   const r = 14;
   const cx = 32, cy = 32;
   if (phase < 0.03 || phase > 0.97) {
-    // 新月 → 星空アイコンを使う
     return weatherIcons.stars;
   }
-  // sweepとカーブで月の形を描く
-  // illuminated fraction
-  let f = phase <= 0.5 ? phase * 2 : (1 - phase) * 2; // 0→1→0
-  let curveX = r * (1 - 2 * f); // +r(三日月) → -r(満月手前) → +r
+  let f = phase <= 0.5 ? phase * 2 : (1 - phase) * 2;
+  let curveX = r * (1 - 2 * f);
   let svg = `<svg class="weather-icon-svg" viewBox="0 0 64 64" fill="none" stroke="white" stroke-width="2">`;
   if (phase <= 0.5) {
-    // 新月→満月（右側が光る = 右弦）
-    svg += `<path d="M${cx} ${cy-r} A${r} ${r} 0 1 1 ${cx} ${cy+r} A${Math.abs(curveX)} ${r} 0 0 ${curveX > 0 ? 0 : 1} ${cx} ${cy-r}Z" fill="rgba(255,255,255,0.15)" stroke="white"/>`;
+    svg += `<path d="M${cx} ${cy-r} A${r} ${r} 0 1 1 ${cx} ${cy+r} A${Math.abs(curveX)} ${r} 0 0 ${curveX > 0 ? 0 : 1} ${cx} ${cy-r}Z" fill="none"/>`;
   } else {
-    // 満月→新月（左側が光る = 左弦）
-    svg += `<path d="M${cx} ${cy-r} A${r} ${r} 0 1 0 ${cx} ${cy+r} A${Math.abs(curveX)} ${r} 0 0 ${curveX > 0 ? 1 : 0} ${cx} ${cy-r}Z" fill="rgba(255,255,255,0.15)" stroke="white"/>`;
+    svg += `<path d="M${cx} ${cy-r} A${r} ${r} 0 1 0 ${cx} ${cy+r} A${Math.abs(curveX)} ${r} 0 0 ${curveX > 0 ? 1 : 0} ${cx} ${cy-r}Z" fill="none"/>`;
   }
   svg += `</svg>`;
   return svg;
@@ -361,6 +371,11 @@ const quotes = {
     { text: "青白く光る銀河の岸に、銀いろの空のすすきが、もうまるでいちめん、風にさらさらさらさら、ゆられてうごいて、波を立てているのでした。", author: "宮沢賢治", title: "銀河鉄道の夜" },
     { text: "もうすっかり夜になって、空は青ぐろく、いちめんの星がまたたいていました。よだかは空へ飛びあがりました。", author: "宮沢賢治", title: "よだかの星" },
   ],
+  // --- 夜曇り（月夜と共通） ---
+  nightcloudy: [
+    { text: "九日の月がそらにかかっていました。そしてうろこ雲が空いっぱいでした。うろこぐもはみんな、もう月のひかりがはらわたの底までもしみとおってよろよろするというふうでした。", author: "宮沢賢治", title: "月夜のでんしんばしら" },
+    { text: "時に、残月、光冷ややかに、白露は地に滋く、樹間を渡る冷風はすでに暁の近きを告げていた。人々はもはや、事の奇異を忘れ、粛然として、この詩人の薄幸を嘆じた。", author: "中島敦", title: "山月記" },
+  ],
   // --- 朝焼け ---
   sunrise: [
     { text: "しだの葉は、よあけのきりをすって、青くつめたくゆれました。よだかは高くきしきしきしと鳴きました。", author: "宮沢賢治", title: "よだかの星" },
@@ -383,6 +398,7 @@ const weatherMeta = {
   snow:    { temp: -2, precip: null },
   thunder: { temp: 18, precip: "あと30分で雨が止みます" },
   moon:    { temp: 15, precip: null },
+  nightcloudy: { temp: 13, precip: null },
   stars:   { temp: 12, precip: null },
   sunrise: { temp: 10, precip: null },
   sunset:  { temp: 18, precip: null },
@@ -426,6 +442,15 @@ function render(category) {
   } else {
     precipEl.style.opacity = "0";
   }
+
+  // 日時
+  const now = new Date();
+  const y = now.getFullYear();
+  const mo = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  const h = String(now.getHours()).padStart(2, "0");
+  const mi = String(now.getMinutes()).padStart(2, "0");
+  document.getElementById("datetime").textContent = `${y}.${mo}.${d}  ${h}:${mi}`;
 
   // 背景
   document.body.className = "weather-" + category;
